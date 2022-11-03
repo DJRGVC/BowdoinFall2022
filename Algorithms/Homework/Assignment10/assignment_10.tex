@@ -1,0 +1,258 @@
+\documentclass{report}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\title{\Huge{Algorithms Assignment 10}\\Fall 2022}
+\author{\huge{Daniel Grant}}
+\date{10 November 2022}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pagebreak
+
+
+    \qs {} {
+    \textbf{Finding the singleton:} You are given a sorted array of numbers where every value except one appears exactly twice, and one value appears only once. Design an efficient algorithm for finding which value appears only once. \\
+
+Note: A general solution should not assume anything about the numbers in the array; specifically, they may not be in a small range, and may not be consecutive. \\
+
+\textbf{Example:} Here are some example inputs to the problem:
+$$
+1,1,2,2,3,4,4,5,5,6,6,7,7,8,8
+$$
+$$
+10,10,17,17,18,18,19,19,21,21,23
+$$
+$$
+1,3,3,5,5,7,7,8,8,9,9,10,10
+$$
+\emph{We expect: pseudocode, a clear (and brief) English description of what the algorithm is doing and why it is correct; running time analysis.}
+    }
+
+
+    \begin{enumerate}
+      \item \textbf{Pseudocode}
+
+    \begin{algorithm}
+      \SetKwInOut{Input}{input}
+      \SetKwInOut{Output}{output}
+      \SetKwFunction{FFindSingleton}{FindSingleton}
+      \SetKwProg{Fn}{Function}{:}{end}
+      
+      \DontPrintSemicolon
+      \caption{Finding the Singleton}
+      \Input{A sorted array of numbers, $A$, where every value except one appears exactly twice, and one value appears only once.}
+      \Input{The length of the array, $n$.}
+      \Output{The value that appears only once.}
+
+      \Fn {\FFindSingleton{$A$, n}}{
+        $l \gets 0$ \tcp*{left index}
+        $r \gets n-1$ \tcp*{right index}
+        \While{$l < r$}{
+          $m \gets \lfloor \frac{l+r}{2} \rfloor$ \tcp*{middle index}
+          \If{$A[m] = A[m-1]$}{
+            \eIf{$m \mod 2 = 0$}{
+              $r \gets m-2$
+            }{
+              $l \gets m+1$
+            }
+          }{
+            \If{$A[m] = A[m+1]$}{ 
+              \eIf{$m \mod 2 = 0$}{ 
+                $l \gets m+2$
+              }{
+                $r \gets m-1$
+              }
+            }{
+            }
+          }
+        }
+        \Return $A[m]$
+      }
+
+    \end{algorithm}
+
+    \item \textbf{Description} \\
+
+    The idea behind this code is to use a binary-search algorithm to iteratively check a given position, and see whether the element to the right of left of it is equal to that given element. 
+
+    If the element to the left of the given element is equal to it, then we know that the element is not the singleton, and we can eliminate half of the array. If the element to the right of the given element is equal to it, then we know that the element is not the singleton, and we can eliminate half of the array. If neither of these are true, then we know that the element is the singleton, and we can return it.
+
+    However, we need to be careful about the indices that we are checking. If the current middle element of the sub array we are looking at is at an odd index, then one of two cases can occur:
+    \begin{enumerate}
+      \item The element to the left of the middle element is equal to the middle element. In this case, we know that the singleton is to the right of the middle element, and we can eliminate the left half of the array.
+        \item The element to the right of the middle element is equal to the middle element. In this case, we know that the singleton is to the left of the middle element, and we can eliminate the right half of the array.
+    \end{enumerate}
+
+    If the current middle element of the sub array we are looking at is at an even index, then one of two cases can occur:
+    \begin{enumerate}
+      \item The element to the left of the middle element is equal to the middle element. In this case, we know that the singleton is to the left of the middle element, and we can eliminate the right half of the array.
+        \item The element to the right of the middle element is equal to the middle element. In this case, we know that the singleton is to the right of the middle element, and we can eliminate the left half of the array. \\
+    \end{enumerate}
+
+
+    \item \textbf{Running Time Analysis} \\
+
+      Since this algorithm is implementing a standard binary search algorithm, the running time is $O(\log n)$. 
+
+      \begin{note}
+              Just like in a traditional binary search, this algorithm is also computing a constant-time operation for each iteration, so there is no other complexities to consider. Furthermore, as this is an iterative implementation, there will also be no recursive overhead to deal with. \\
+      \end{note}
+
+    \end{enumerate}
+
+
+\newpage
+    \qs {} {
+
+\textbf{Art gallery guarding:} In the art gallery guarding problem we are given a line $L$ that represents a long hallway in an art gallery. We are also given a set $X=\left\{x_0, x_1, x_2, \ldots, x_{n-1}\right\}$ of real numbers that specify the positions pf paintings in this hallway; assume that each painting is a point. Suppose that a single guard can protect all the paintings within a distance at most 1 of his or her position, on both sides. \\
+
+Design an algorithm for finding a placement of guards that uses the minimum number of guards to guard all the paintings in $X$. You can assume that the positions of the paintings are sorted. Briefly argue why your algorithm is correct and analyze its running time. \\
+
+\textit{We expect: The algorithm as pseudocode, a brief explanation, analysis and justification of correctness i.e. why does it always assure the minimum number of guards? Remember that to show that a greedy algorithms is correct it is sufficient to show that there exists an optimal solution that includes the first greedy choice.)}
+
+    }
+
+
+    \begin{enumerate}
+      \item \textbf{Pseudocode}
+
+
+    \begin{algorithm}
+      \SetKwInOut{Input}{input}
+      \SetKwInOut{Output}{output}
+      \SetKwFunction{FArtGallery}{ArtGallery}
+      \SetKwProg{Fn}{Function}{:}{end}
+      
+      \DontPrintSemicolon
+      \caption{Finding the Optimal Guard Placement}
+      \Input{A sorted array of numbers, $X$, where each number represents the position of a painting.}
+      \Input{The length of the array, $n$.}
+      \Output{The number of guards required to guard all the paintings.}
+
+      \Fn {\FArtGallery{$X$, n}}{
+        $guardCount \gets 1$ \tcp*{number of guards}
+        $i \gets 1$ \tcp*{index of current painting}
+        $curGuard \gets X[0] + 1$ \tcp*{position of current guard}
+        \While{$i < n$}{
+          \If{$X[i] > curGuard + 1$}{
+            $curGuard = X[i]$ \\
+            $guardCount \gets guardCount + 1$
+          }{
+          }
+          $i \gets i + 1$
+        }
+        \Return $guardCount$
+      }
+
+    \end{algorithm}
+
+    \item \textbf{Description} \\
+
+    The idea behind this code is to use a greedy algorithm to iteratively check the position of the current guard, and see whether the next painting is within the guard's range. If the next painting is within the guard's range, then we know that the guard can protect that painting, and we can move on to the next painting. If the next painting is not within the guard's range, then we know that the guard cannot protect that painting, and we need to place a new guard at that painting's position. 
+
+    We can initialize the first guard as being at the position of the first painting, plus one. This is because we know that if the guard is one unit away from that first painting, they are as far away as possible to that painting while still being able to protect it. 
+
+    We can then iterate through the array of paintings, and check whether the next painting is within the guard's range. If it is, then we can move on to the next painting. If it is not, then we know that we need to place a new guard at that painting's position. We can then increment the number of guards, and move on to the next painting. \\
+
+    \item \textbf{Running Time Analysis} \\
+
+      Since this algorithm is implementing a standard linear search algorithm, the running time is $O(n)$. 
+
+      \begin{note}
+              Just like in a traditional linear search, this algorithm is also computing a constant-time operation for each iteration, so there is no other complexities to consider. Furthermore, as this is an iterative implementation, there will also be no recursive overhead to deal with. \\
+      \end{note}
+
+    \item \textbf{Justification of Correctness} \\
+
+    \begin{enumerate}
+      \item \textbf{Optimal Substructure} \\
+
+      The optimal substructure property states that an optimal solution to a problem can be constructed from optimal solutions to its subproblems. In this case, the subproblem is the problem of finding the optimal guard placement for a subarray of the original array. \\
+
+      \item \textbf{Greedy Choice} \\
+
+      The greedy choice property states that at each step of the algorithm, we make a choice that looks best at the moment, and we hope that this choice will lead to an optimal solution. In this case, the greedy choice is to place a guard at the position of the next painting that is not within the range of the current guard, plus one. \\
+
+      \item \textbf{Correctness} \\
+
+      The correctness of this algorithm can be determined by showing that the greedy choice is always optimal. This can be done by showing that the greedy choice is always a part of the optimal solution. \\
+
+      The greedy choice is always a part of the optimal solution because it is always the case that the optimal solution will include the first painting that is not within the range of the current guard. This is because if the optimal solution does not include the first painting that is not within the range of the current guard, then the optimal solution will include the first painting that is not within the range of the current guard, and the first painting that is not within the range of the current guard will be the next painting that is not within the range of the current guard. \\
+
+      Therefore, the greedy choice is always a part of the optimal solution, and the greedy choice will be optimal. \\
+
+    \end{enumerate}
+
+  \end{enumerate}
+
+
+\newpage
+    \qs {} {
+\textbf{Unbounded knapsack:} We have $n$ items, each with a value and a positive weight; Item $i$ has value $v_i$ and weight $w_i$. We have a knapsack that holds maximum weight $W$. In this problem you'll consider a variation of the $0-1$ Knapsack problem, where we have infinite copies of each item. Describe an algorithm that, given $W,\left\{w_1, \ldots, w_n\right\}$ and $\left\{v_1, \ldots, v_n\right\}$, finds the maximal value that can be loaded into the knapsack.
+
+  \begin{enumerate}
+    \item A friend proposes the following greedy algorithm: start with the item with the largest cost-per-pound, and pick as many copies as fit in the backpack. Repeat.
+Show your friend this is not correct by coming up with a counter-example.
+
+    \textit{We expect: a small example, the greedy solution, and the optimal solution}
+    \item Define your sub-problem and state clearly what its argument(s) represent and what it returns.
+
+      Hint: With the classical knapsack, once you take an item, you cannot take it again, so you have fewer items to choose from. So the subproblem we use has to keep track of both the knapsack size as well as which items are allowed in the knapsack. We used \emph{knapsack} $(w, i)$ to be the maximum value we can get for a knapsack of weight $w$ considering items 1 through $i$. For the unbounded knapsack, we have infinite supplies of each item. So we don't need to keep track of which items we already included (only of the size of the knapsack).
+
+    \item Argue optimal sub-structure:
+      Hint: Suppose the optimal solution contains item $i$. Then the remaining part of the optimal solution must be an optimal solution for .... .
+
+    \item Come up with a recursive definition for the subproblem you chose in (b)
+    Hint: Consider all the choices, and pick the best.
+
+  \item Develop a DP solution - either top-down or bottom up. What is the running time of your algorithm?
+
+  \end{enumerate}
+    }
+
+
+    \begin{enumerate}
+      \item \textbf{Greedy Counter-Example} \\
+
+        \begin{example} {Unbounded KnapSack Example} { 1 }
+
+          In the case of the table below, if you had a knapsack of size 4 the greedy algorithm would choose to take item 3, since it has the highest value per weight. 
+          \begin{align*}
+            \begin{tabular}{|c|c|c|}
+              \hline
+              Item & Value & Weight \\
+              \hline
+              1 & 4 & 4 \\
+              \hline
+              2 & 3 & 2 \\
+              \hline
+              3 & 5 & 3 \\
+              \hline
+            \end{tabular}
+          .\end{align*}
+
+        However, the optimal solution would be to take item 2, since although it does not have the highest value per weight ratio, you could fit two of them into the knapsack, totaling to a value of 6 as compared to the knapsack of value 5 for the greedy solution. \\
+        \end{example}
+
+
+      \item \textbf{Subproblem Definition} \\
+
+
+      \item \textbf{Optimal Substructure} \\
+        
+
+      \item \textbf{Recursive Definition} \\
+
+
+      \item \textbf{Dynamic Programming Solution} \\
+    \end{enumerate}
+
+
+
+\end{document}

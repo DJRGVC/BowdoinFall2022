@@ -1,0 +1,89 @@
+\documentclass{report}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\begin{document}
+
+\chapter {Day 15}
+
+
+\begin{theorem} {Prime Theorem of Divisibility} { 1 }
+  Let $m \in Integer, m \le 1$. Then:
+  m is prime $\leftrightarrow  (m|ab \to m|a$ or $m|b)$
+\end{theorem}
+
+  
+\pf {Proof of Theorem above (already proved $\to$ )} {
+  (Other Direction): \\
+  If m is composite then: \\
+  \[
+  ~(m|b \to m|a or m|b)
+  .\]  \\
+
+  Now, Simplify the statement we want to show further: \\
+  \begin{align*}
+    ~(m|b \to  m|a \lor m|b) &= \\
+                       &= m|ab \land ~(m|a \land m|b) \\
+                       &= m|ab \land (m|a \land m|b) \\
+  \end{align*}
+
+  Overall, we want to show that if m is composite them $(m|ab \land (m \nmid a \land m \nmid b))$ \\
+  \par Assume m is composite. \\
+
+  Choose a = x and b = y. Then by D.L 4,
+  \begin{align*}
+  |x| < |m| \\
+  |y| < |n|
+  .\end{align*} \\
+}
+
+
+\begin{definition} {Divisibility Property} { 1 }
+  \begin{align*}
+    a,b,q \in \mathbb{Z} \\
+    a > 0, b \geq 0 \\
+    r \in \mathbb{R} \\
+    \exists q > 0, q \in \mathbb{Z}, r \in \mathbb{N} \\
+    r < |b| st. a = bq + r
+  .\end{align*}
+\end{definition}
+
+\begin{definition} {Modular Arithmetic} { 1 }
+    sad
+\end{definition}
+
+
+  
+\begin{definition} {Modular Arithmetic} { 1 }
+  Two integers a and b are \textbf{congruent modulo} m, written as $a \equiv b $ (mod m) if $b=a + km$ for some  $k \in \mathbb{Z}$. \\
+(check camera roll for picture of worksheet related to this.) \\
+\end{definition}
+
+
+\pf {Proof of Definition above} {
+  Suppose $a \equiv b$ (mod m) and  $b \equiv c$ (mod m) \\
+  want to show  $a \equiv c$ (mod m) \\
+  we know from the definition of congruence mod m:
+   \begin{align*}
+    b = a + km \\
+    c = b + lm \\
+    c = a + (l + k)m
+  .\end{align*}
+  
+  Now, repack definition:
+  \begin{align*}
+    c = a + (k + l)m \\
+    a \equiv c (mod m) \\
+  .\end{align*}
+}
+
+\pf {Proof of 5 from worksheet} {
+  Try $n = 6$ \\
+  \begin{align*}
+    (n-1)! = 5! = 120 = 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1\\
+  .\end{align*}
+}
+
+\end{document}

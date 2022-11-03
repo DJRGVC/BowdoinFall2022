@@ -1,0 +1,6 @@
+\contentsline {chapter}{\numberline {1}Day 25}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Data Storage}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Caching}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Cache Operation}{3}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Cache Design}{4}{subsection.1.2.2}%
+\contentsfinish 

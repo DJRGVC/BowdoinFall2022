@@ -1,0 +1,148 @@
+\documentclass{report}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\begin{document}
+\chapter{Day 25}
+\section{Data Storage}
+  \begin{example} {Hardware used for Data Storage} { 2 }
+    $\to$ \textbf{Data storage technologies can be broken into the following categories:} \\
+    \par \emph {Disks}
+    \begin{enumerate}
+      \item Hard Disk (\underline{HDD})
+    \item Solid State Drive (\underline{SSD})   \\
+    \end{enumerate}
+    \par
+    Differences Between the two disk types: \\
+    \begin{itemize}
+      \item \underline{SDD} is faster and smaller than \underline{HDD}
+      \item \underline{SDD} is also more expensive than \underline{HDD} \\
+    \end{itemize}
+    \par
+    \emph{Random Access Memory (RAM): }\\
+    \begin{enumerate}
+      \item Dynamic RAM (\underline{DRAM})
+      \item Static RAM (\underline{SRAM}) \\
+    \end{enumerate}
+    \par
+    \emph {Registers}, Such as:
+    \begin{itemize}
+      \item rax
+      \item rbx
+      \item rcx
+      \item rdx
+      \item rsi (\emph{etc})
+    \end{itemize}
+  \end{example} 
+
+\newpage
+$\to$ \textbf{In terms of storage access time, the following is true:} 
+\begin{itemize}
+  \item Disks are the slowest in terms of access time. 
+  \item SSD is marginally faster than disks. 
+  \item DRAM is faster than SSD by a large margin, but still slower than registers (CPU) 
+\end{itemize}
+
+\begin{definition} {CPU-Memory gap} { 3 }
+  Although the CPU is the fastest component in a computer in terms of access time, it is still progressing in terms of access speed much faster than other types of data storage. \\
+  
+  The problem we should be concerned about it the gap between the CPU and the memory creates idle time for the CPU as is it significantly faster than memory. \\
+
+  Need something to bridge the gap between the CPU and the memory (\emph{hint: Caching}).
+
+\end{definition} 
+
+$\to$ \textbf{Caching vs. Memory} 
+\begin{itemize}
+  \item Caching is smaller, faster, and more expensive; It caches a subset of the blocks of memory
+  \item Memory is larger, slower, and cheaper; It is partitioned into blocks. 
+\end{itemize}
+
+\section{Caching}
+
+\begin{definition} {Caching} { 4 }
+  A smaller, faster storage to speed up larger, slower storage. \\
+  \begin{note}
+    \emph{SRAM is used for hardware caches, and DRAM is used for main memory.}
+  \end{note} 
+\end{definition}
+  $\to$ \textbf{Main Topics in Caching: }
+  \begin{enumerate}
+    \item \underline{Cache Operation} 
+    \item \underline{Cache Design} 
+    \item \underline{Cache Effectiveness}  
+  \end{enumerate}
+  \subsection{Cache Operation}
+  \begin{example} {Cache Operation} { 5 }
+   Uses fixed size data blocks. The size of the block is a parameter set for each system. The "block" is the size of unit transfer between the cache and memory (An entire block will be copied from memory to cache even if you only referenced a small amount of that memory) \\
+
+   \begin{note} 
+     $\to$ \emph{Cache Block Size Comparison} \\
+    Smaller blocks would lead to more blocks in general in the cache. \\
+    However, larger blocks would lead to fewer cache misses. \\
+   \end{note}
+
+    For example, you might access memory from some address in the middle of a block, and then load it into the cache in the hopes of getting "cache hits" later on. \\
+
+    \par In this example, we are accessing both the cache and the memory, but the time it takes to access the cache is much faster than the time it takes to access the memory, so moving to cache is nearly negligible. \\
+    \par In the case of a cache "miss", will perform a cache eviction.
+    \begin{definition} {Cache Eviction} { 7 }
+     Changing something stored in the cache to something else stored in memory. \\
+    \end{definition}
+
+  \end{example}
+
+  \subsection{Cache Design} 
+    $\to$ \textbf{Design Goals for Caches:} 
+    \begin{itemize} 
+      \item Maximize cache hit rate
+      \item Minimize complexity and cost \\
+    \end{itemize}
+
+    \begin{definition} {Write-Miss} { 8 }
+      Types of write-misses:
+      \begin{enumerate}
+        \item write-allocate cache (bring updated block into cache)
+        \item no-write-allocate cache (leave cache alone) \\
+      \end{enumerate}
+      
+    \end{definition}
+    
+    \begin{example} {Write-\underline{through} Cache} { 8 }
+      $\to$ \textbf{Write-Miss} \\
+      On a write-hit, will update cache and memory immediately. \\
+
+      $\to$ \textbf{Write-Miss} \\
+      Uses the no-write-allocate policy. \\
+    \end{example}  
+    \begin{example} {Write-\underline{back} Cache} { 9 }
+      $\to$ \textbf{Write-Hit} \\
+      On a write-hit, will IGNORE memory, and only update the cache. \\
+      \par When evicting a block, if it a block that has been changed, then it will be different than the block saved in memory, so will update memory on eviction. \\
+      \par This will be preferable in the scenario that a cache is updated numerous times in a row, as it will not update memory on each access. \\
+      \par \emph{Deferring} memory updates to a later time. \\
+
+      $\to$ \textbf{Write-Miss} \\
+      Uses the write-allocate policy. \\
+    \end{example}  
+
+    \newpage
+    $\to$ \textbf{Cache Placement Policy:}
+    \begin{itemize}
+      \item \underline{Direct-Mapped Cache}: Each memory block is mapped to 1 code block, so each cache is tied to a certain part of the memory (given a piece of memory, it has an associated cache).
+        \begin{enumerate}
+          \item easy to know if memory is in the cache
+          \item easy to know which cache to use for some memory
+          \item easy to implement
+          \item If multiple pieces of memory are often being accessed, but are associated to the same cache, a \emph{Conflict Miss} occurs.
+        \end{enumerate}
+      \item \underline{Fully-Associative Cache} 
+      \item \underline{Set-Associative Cache} \\
+    \end{itemize}
+
+    
+
+
+\end{document}
