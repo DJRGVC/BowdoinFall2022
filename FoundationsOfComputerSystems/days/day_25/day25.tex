@@ -5,8 +5,14 @@
 \input{letterfonts}
 
 \begin{document}
-\chapter{Day 25}
-\section{Data Storage}
+\section{Day 25}
+\begin{flushright}
+  \emph{November 2, 2022}
+\end{flushright}
+
+
+
+\subsection{Data Storage}
   \begin{example} {Hardware used for Data Storage} { 2 }
     $\to$ \textbf{Data storage technologies can be broken into the following categories:} \\
     \par \emph {Disks}
@@ -37,7 +43,6 @@
     \end{itemize}
   \end{example} 
 
-\newpage
 $\to$ \textbf{In terms of storage access time, the following is true:} 
 \begin{itemize}
   \item Disks are the slowest in terms of access time. 
@@ -60,7 +65,7 @@ $\to$ \textbf{Caching vs. Memory}
   \item Memory is larger, slower, and cheaper; It is partitioned into blocks. 
 \end{itemize}
 
-\section{Caching}
+\subsection{Caching}
 
 \begin{definition} {Caching} { 4 }
   A smaller, faster storage to speed up larger, slower storage. \\
@@ -94,7 +99,7 @@ $\to$ \textbf{Caching vs. Memory}
 
   \end{example}
 
-  \subsection{Cache Design} 
+  \subsubsection{Cache Design} 
     $\to$ \textbf{Design Goals for Caches:} 
     \begin{itemize} 
       \item Maximize cache hit rate
@@ -128,7 +133,7 @@ $\to$ \textbf{Caching vs. Memory}
       Uses the write-allocate policy. \\
     \end{example}  
 
-    \newpage
+
     $\to$ \textbf{Cache Placement Policy:}
     \begin{itemize}
       \item \underline{Direct-Mapped Cache}: Each memory block is mapped to 1 code block, so each cache is tied to a certain part of the memory (given a piece of memory, it has an associated cache).

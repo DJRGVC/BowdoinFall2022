@@ -55,24 +55,24 @@ $$
         $r \gets n-1$ \tcp*{right index}
         \While{$l < r$}{
           $m \gets \lfloor \frac{l+r}{2} \rfloor$ \tcp*{middle index}
-          \If{$A[m] = A[m-1]$}{
-            \eIf{$m \mod 2 = 0$}{
+          \If{$A[m] = A[m-1]$}{ \tcp*{if the middle value is equal to the value before it}
+            \eIf{$m \mod 2 = 0$}{ \tcp*{if the middle index is even}
               $r \gets m-2$
-            }{
+            }{ \tcp*{if the middle index is odd}
               $l \gets m+1$
             }
           }{
-            \If{$A[m] = A[m+1]$}{ 
-              \eIf{$m \mod 2 = 0$}{ 
+            \If{$A[m] = A[m+1]$}{ \tcp*{if the middle value is equal to the value after it}
+              \eIf{$m \mod 2 = 0$}{ \tcp*{if the middle index is even}
                 $l \gets m+2$
-              }{
+              }{ \tcp*{if the middle index is odd}
                 $r \gets m-1$
               }
             }{
             }
           }
         }
-        \Return $A[m]$
+        \Return $A[m]$ \tcp*{return the value at the middle index}
       }
 
     \end{algorithm}
@@ -106,6 +106,7 @@ $$
 
     \end{enumerate}
 
+    \qed
 
 \newpage
     \qs {} {
@@ -140,12 +141,12 @@ Design an algorithm for finding a placement of guards that uses the minimum numb
         $i \gets 1$ \tcp*{index of current painting}
         $curGuard \gets X[0] + 1$ \tcp*{position of current guard}
         \While{$i < n$}{
-          \If{$X[i] > curGuard + 1$}{
-            $curGuard = X[i]$ \\
+          \If{$X[i] > curGuard + 1$}{ \tcp*{if the current painting is not within the range of the current guard}
+            $curGuard = X[i] + 1$ \\
             $guardCount \gets guardCount + 1$
           }{
           }
-          $i \gets i + 1$
+          $i \gets i + 1$ \tcp*{increment the index of the current painting}
         }
         \Return $guardCount$
       }
@@ -191,6 +192,8 @@ Design an algorithm for finding a placement of guards that uses the minimum numb
 
   \end{enumerate}
 
+  \qed
+
 
 \newpage
     \qs {} {
@@ -208,7 +211,7 @@ Show your friend this is not correct by coming up with a counter-example.
     \item Argue optimal sub-structure:
       Hint: Suppose the optimal solution contains item $i$. Then the remaining part of the optimal solution must be an optimal solution for .... .
 
-    \item Come up with a recursive definition for the subproblem you chose in (b)
+    \item Come up with a recursive definition for the subproblem you chose in (2)
     Hint: Consider all the choices, and pick the best.
 
   \item Develop a DP solution - either top-down or bottom up. What is the running time of your algorithm?
@@ -222,7 +225,7 @@ Show your friend this is not correct by coming up with a counter-example.
 
         \begin{example} {Unbounded KnapSack Example} { 1 }
 
-          In the case of the table below, if you had a knapsack of size 4 the greedy algorithm would choose to take item 3, since it has the highest value per weight. 
+          In the case of the table below, if you had a knapsack of size 4 the greedy algorithm would choose to take item 3, since it has the highest value per weight ($\frac{5}{3} > \frac{3}{2} > \frac{4}{4}$). 
           \begin{align*}
             \begin{tabular}{|c|c|c|}
               \hline
@@ -240,17 +243,196 @@ Show your friend this is not correct by coming up with a counter-example.
         However, the optimal solution would be to take item 2, since although it does not have the highest value per weight ratio, you could fit two of them into the knapsack, totaling to a value of 6 as compared to the knapsack of value 5 for the greedy solution. \\
         \end{example}
 
+        $\to$ \emph{General Case:} 
+
+        In general, this will not work because the greedy algorithm will not always choose the optimal solution. This is because the greedy algorithm will always choose the item with the highest value per weight ratio, but this does not always mean that it will be the optimal solution. \\
+
+        \newpage
+
+    \begin{algorithm}
+      \SetKwInOut{Input}{input}
+      \SetKwInOut{Output}{output}
+      \SetKwFunction{FGreedyKnapsack}{GreedyKnapsack}
+      \SetKwFunction{FFindBestValue}{FindBestValue}
+      \SetKwProg{Fn}{Function}{:}{end}
+      
+      \DontPrintSemicolon
+      \caption{Greedy Unbounded Knapsack Algorithm}
+      \Input{A list of $n$ items, each with a value $v_i$,  and a weight $w_i$, and a knapsack that holds a maximum weight of $W$.}
+      \Output{The maximum value that can be loaded into the knapsack.}
+
+      \Fn {\FGreedyKnapsack{$W$, $\left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$, $n$}}{
+        $V = 0$ \tcp*{Initialize the value of the knapsack to 0.} 
+        \While{$W > 0$} {
+        $i$ = \FFindBestValue{$\left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}, n, W$} \tcp*{Find highest value ratio that fits.}
+          $W = W - w_i$ \tcp*{Remove the weight of the item from the knapsack.}
+          $V = V + v_i$ \tcp*{Add the value of the item to the knapsack.}
+        }
+        \Return $V$
+      }
+      \Fn {\FFindBestValue{$\left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$, $n$, $maxWeight$}}{
+        $bestIndex \gets 0$ \tcp*{Initialize the best index to 0.}
+        $bestValue = \frac{v_0}{w_0}$ \tcp*{Initialize the best value to the value of the first item.}
+        \For{$i \gets 1$ \KwTo $n$}{
+          \If {$w_i \leq maxWeight$} {
+            $value \gets \frac{v_i}{w_i}$ \tcp*{Calculate the value of the item.}
+            \If{$value > bestValue$}{ 
+              $bestValue \gets value$ \tcp*{Update the best value.}
+              $bestIndex \gets i$ \\
+            }
+          }
+        }
+        \Return $bestIndex$ \tcp*{Return the index of the best item.}
+      }
+
+    \end{algorithm}
+
+    $\to$ \emph{Algorithm Description:} 
+
+    The algorithm starts by initializing the value of the knapsack to 0. Then, it loops through the items, finding the item with the highest value per weight ratio that fits in the knapsack. It then removes the weight of the item from the knapsack and adds the value of the item to the knapsack. It then repeats this process until the knapsack is full. \\
+
+    However, as discussed above, this will not be optimal. The optimal solution will be to take item 2, since although it does not have the highest value per weight ratio, you could fit two of them into the knapsack, totaling to a value of 6 as compared to the knapsack of value 5 for the greedy solution. This could be implemented in a very similar manner to the traditional bounded 0-1 Knapsack problem. \\
+
+    In essence, instead of deciding to include an item or not, we will decide to include an item $k$ times, where $k$ is the maximum number of times that the item can fit in the knapsack. As I will show in the following sections, this approach will yield the optimal solution. \\
+
 
       \item \textbf{Subproblem Definition} \\
 
 
-      \item \textbf{Optimal Substructure} \\
+        The subproblem that we will be using is the following: \\
+
         
+          \text{UnboundedKnapSack}$(W, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\})$ \\ 
+          $= \max_{i \in \left\{1, \ldots, n\right\}} \left\{ \text{UnboundedKnapSack} (W - w_i, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}) + v_i \right\} $
+
+        \begin{note}
+          The argument for this subproblem is the weight of the knapsack, and the set of weights and values of the items. The return value is the maximum value that can be loaded into the knapsack. \\
+        \end{note}
+
+    \newpage
+
+      \item \textbf{Optimal Substructure} \\
+
+        The optimal substructure of this problem can be explained in the following manner: \\
+
+        Suppose you have an optimal solution, with containing some item $i$ $k$ times. Then, the optimal solution for the subproblem of the knapsack with a weight of $W - k w_i$ will be the optimal solution for the knapsack with a weight of $W$. This is because the optimal solution for the knapsack with a weight of $W$ will be the optimal solution for the knapsack with a weight of $W - k w_i$ plus the value of the item $i$ $k$ times. \\
+
 
       \item \textbf{Recursive Definition} \\
 
+        The recursive definition of non-dynamic recursive algorithm is the following (\emph{Using acronym UKS to represent UnboundedKnapSack function call, for brevity}): 
+
+        \begin{align*}
+          \text{UKS} (W, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}) &= \max_{i \in \left\{1, \ldots, n\right\}} \left\{ \text{UKS} (W - w_i, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}) + v_i \right\} \\
+          &= \max_{i \in \left\{1, \ldots, n\right\}} \left\{ \text{UKS} (W - w_i, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}) + v_i \right\} \text{ if } W - w_i \geq 0 \\
+          &= 0 \text{ if } W - w_i < 0
+        \end{align*}
+
+
+          The first line is the recursive definition of the problem. The second line is the recursive definition of the problem with the base case. The third line is the base case of the problem. \\
+
+          To represent this in a more formal manner, we can use the following recurrence relation: 
+
+          \begin{align*}
+            T(n) = T(n, W - w_n) + T(n - 1, W) + 1 \\
+          \end{align*}
+
+          This relation has a base case when $W \leq 0$ or $n = 0$:
+
+          \begin{align*}
+            T(n) = \begin{cases}
+              0 & \text{if } W \leq 0 \text{ or } n = 0 \\
+              T(n, W - w_n) + T(n - 1, W) + 1 & \text{otherwise}
+            \end{cases}
+          \end{align*}
+
+          Simplifying this relation, we get the following:
+
+          \begin{align*}
+            T(n) &= 2^{min(W + n, n + n)}  \\
+                 &= 2^{min(W, n) + n}
+          \end{align*}
+
+          Notice that for this solution, the time complexity is exponential. This is because the number of subproblems is exponential in the number of items. In the worst case, there could be $2^{2n}$ function calls in the case of there being more items than capacity in the knapsack. In the second case, where $W < n$, there could be $2^W$ function calls, then an additional  $2^n$ in the worst case (generalizes to simply $2^{W + n}$ calls).
+
+          \newpage
+
+
+    \begin{algorithm}
+      \SetKwInOut{Input}{input}
+      \SetKwInOut{Output}{output}
+      \SetKwFunction{FNonDPUnboundedKnapsack}{NonDPUnboundedKnapsack}
+      \SetKwProg{Fn}{Function}{:}{end}
+      
+      \DontPrintSemicolon
+      \caption{Finding the optimal solution to the unbounded Knapsack problem without dynamic programming.}
+      \Input{The weight of the knapsack, $W$, and the set of weights and values of the items, $\left\{w_1, \ldots, w_n\right\}$ and $\left\{v_1, \ldots, v_n\right\}$.}
+      \Output{The maximum value that can be loaded into the knapsack.}
+
+      \Fn {\FNonDPUnboundedKnapsack{$W, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$}}{
+
+        \If{$W \leq 0$ or $n = 0$}{ 
+          \Return 0 \tcp*{Base case}
+        }
+
+        \Return max(\FNonDPUnboundedKnapsack{$W - w_n, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$} + $v_n$, \FNonDPUnboundedKnapsack{$W, \left\{w_1, \ldots, w_{n-1}\right\}, \left\{v_1, \ldots, v_{n-1}\right\}$}) 
+      }
+    \end{algorithm}
+
+    $\to$ \emph{Algorithm Description:} 
+    
+    This algorithm is a recursive algorithm that finds the optimal solution to the unbounded 0-1 Knapsack problem without dynamic programming. The algorithm takes in the weight of the knapsack, $W$, and the set of weights and values of the items, $\left\{w_1, \ldots, w_n\right\}$ and $\left\{v_1, \ldots, v_n\right\}$. The algorithm returns the maximum value that can be loaded into the knapsack. \\
+
+
+          \begin{note}
+            For the dynamic implementation of this problem, which is very similar to this implementation, we will also be using a 2D array to store the values of the subproblems. The first dimension will be the number of items, and the second dimension will be the weight of the knapsack. This will allow us to store the values of the subproblems in a bottom-up manner, and then retrieve the optimal solution from the top of the array. \\
+            
+            The runtime of this algorithm will be $O(n \cdot W)$, where $n$ is the number of items and $W$ is the weight of the knapsack. \\
+            
+            This is because we will be looping through the items, and then looping through the weights of the knapsack, which produces the $O(n \cdot W)$ runtime. \\
+          \end{note}
+
+          \newpage
 
       \item \textbf{Dynamic Programming Solution} \\
+
+        \begin{algorithm}
+          \SetKwInOut{Input}{input}
+          \SetKwInOut{Output}{output}
+          \SetKwFunction{FDPUnboundedKnapsack}{DPUnboundedKnapsack}
+          \SetKwProg{Fn}{Function}{:}{end}
+          
+          \DontPrintSemicolon
+          \caption{Finding the optimal solution to the unbounded 0-1 Knapsack problem with dynamic programming.}
+          \Input{The weight of the knapsack, $W$, and the set of weights and values of the items, $\left\{w_1, \ldots, w_n\right\}$ and $\left\{v_1, \ldots, v_n\right\}$.}
+          \Input{A table of values, $T$, that stores the values of the subproblems. (This table is of size $W \times n$)} \tcp*{Initialized with all $-1$s}
+          \Output{The maximum value that can be loaded into the knapsack.}
+
+          \Fn {\FDPUnboundedKnapsack{$W, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$, table}}{
+
+            \If{$T[W][n] \neq -1$ }{
+              \Return $T[W][n]$  \tcp*{If the value of the subproblem has already been calculated, return it.}
+            }
+
+        \If{$W \leq 0$ or $n = 0$}{ \tcp*{If the weight of the knapsack is less than or equal to 0, or there are no items, return 0.}
+          \Return 0
+        }
+
+        $T[n, W] = $ max(\FNonDPUnboundedKnapsack{$W - w_n, \left\{w_1, \ldots, w_n\right\}, \left\{v_1, \ldots, v_n\right\}$} + $v_n$, \FNonDPUnboundedKnapsack{$W, \left\{w_1, \ldots, w_{n-1}\right\}, \left\{v_1, \ldots, v_{n-1}\right\}$}) 
+            
+
+
+            \Return $T[n, W]$ \tcp*{Return the value of the subproblem.}
+          }
+              
+        \end{algorithm}
+
+        $\to$ \emph{Algorithm Description:}
+
+        This algorithm is identical in terms of functionality to the non-dynamic programming solution, but it uses a table to store the values of the subproblems. The algorithm takes in the weight of the knapsack, $W$, and the set of weights and values of the items, $\left\{w_1, \ldots, w_n\right\}$ and $\left\{v_1, \ldots, v_n\right\}$. The algorithm also takes in a table of values, $T$, that stores the values of the subproblems. (This table is of size $W \times n$). The algorithm similarly returns the maximum value that can be loaded into the knapsack. The runtime does differ, however. This is explained in the note in the \textbf{Recursive Definition$^4$} section above.\\
+
+        \qed
+
     \end{enumerate}
 
 

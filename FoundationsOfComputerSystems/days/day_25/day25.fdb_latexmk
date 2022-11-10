@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1667403020 "day25.tex" "day25.pdf" "day25" 1667403022
+["pdflatex"] 1667573547 "day25.tex" "day25.pdf" "day25" 1667573548
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -12,7 +12,6 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
-  "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmr17.tfm" 1136768653 1292 296a67155bdbfc32aa9c636f21e91433 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/newpx/pxsys.tfm" 1622581553 1572 bcf7a724ad3204b5e0bc5efc50ffa655 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/newpx/zplexa.tfm" 1589834291 760 1bbb6b93780440b947a1a84c0a1886d8 ""
@@ -247,8 +246,8 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1665855438 2826445 d7fee5f0da4a92d75df0c1cee9410831 ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "day25.aux" 1667403022 3301 23ffe359ded8c79b689fac9b4c08c9b8 "pdflatex"
-  "day25.tex" 1667403019 5867 c34e31762392ab7a883e18538f33b2fb ""
+  "day25.aux" 1667573548 2989 ec48328d73295b7ff733e9b94c5a7ab4 "pdflatex"
+  "day25.tex" 1667573545 5920 df30f85f76d255605e0ac89e9a804ea3 ""
   "letterfonts.tex" 1667397955 8702 ef32ca12e97530ef5734ca4adcb1f6b1 ""
   "macros.tex" 1667397955 3389 93000260d2aea292d29c76d4ace77a29 ""
   "preamble.tex" 1667397955 20075 882b0a6c2dd3d3a8f0171f13fca5546e ""
