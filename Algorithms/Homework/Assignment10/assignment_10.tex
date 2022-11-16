@@ -186,6 +186,13 @@ Design an algorithm for finding a placement of guards that uses the minimum numb
 
       The greedy choice is always a part of the optimal solution because it is always the case that the optimal solution will include the first painting that is not within the range of the current guard. This is because if the optimal solution does not include the first painting that is not within the range of the current guard, then the optimal solution will include the first painting that is not within the range of the current guard, and the first painting that is not within the range of the current guard will be the next painting that is not within the range of the current guard. \\
 
+      Furthermore, approaching the justification of a greedy algorithm through proof by contradiction, consider the following:
+      \begin{itemize}
+        \item Consider $O$ to be an optimal solution.
+        \item Consider $G$ to be a greedy solution, where $G_1$ is the first greedy choice of where to place the first guard.
+      \end{itemize}
+      The first guard in the optimal solution must guard the first painting. Therefore, the placement of the first guard must be within one of the first painting. Since the greedy solution guards the first painting from the furthest away point possible, then it will be guarding atleast as many as the optimal solution's position of the first guard. Therefore, $G_1 \in O$.
+
       Therefore, the greedy choice is always a part of the optimal solution, and the greedy choice will be optimal. \\
 
     \end{enumerate}
@@ -434,6 +441,7 @@ Show your friend this is not correct by coming up with a counter-example.
         \qed
 
     \end{enumerate}
+
 
 
 
